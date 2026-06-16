@@ -6,41 +6,31 @@ export default async function RacketPage({
   params,
 }: PageProps<"/racket/[id]">) {
   const { id } = await params;
-  const racket = getRacket(parseInt(id));
-  if (!racket) {
+  const racketResponse = await getRacket(parseInt(id));
+
+  if (racketResponse.isError) {
+    throw new Error("Ошибка сервера");
+  }
+  if (!racketResponse.data) {
     notFound();
   }
   return (
     <main>
       <section className="flex gap-1">
         <div className="w-30%">
-          <p>{racket.brand.name}</p>
-          <h1>{racket.name}</h1>
-          <p>{racket.description}</p>
+          <p>{racketResponse.data.brand.name}</p>
+          <h1>{racketResponse.data.name}</h1>
+          <p>{racketResponse.data.description}</p>
         </div>
         <Image
           className="w-170"
           width={300}
           height={350}
-          src={racket.imageUrl}
-          alt={racket.name}
+          src={racketResponse.data.imageUrl}
+          alt={racketResponse.data.name}
         />
-        <p className="text-4xl mx-30">&euro;{racket.price}</p>
+        <p className="text-4xl mx-30">&euro;{racketResponse.data.price}</p>
       </section>
     </main>
   );
-}
-
-export function generateStaticParams() {
-  return [
-    {
-      id: "1",
-    },
-    {
-      id: "2",
-    },
-    {
-      id: "3",
-    },
-  ];
 }
