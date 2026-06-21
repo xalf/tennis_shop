@@ -1,7 +1,13 @@
 import { getRackets, getTheBestRackets } from "@/api";
 import CustomLink from "@/components/CustomLink";
 import RacketsGallery from "@/components/RacketsGallery";
+import { Metadata } from "next";
 import { Suspense } from "react";
+
+export const metadata: Metadata = {
+  title: "Главная | Tennis store",
+  description: "Покупайте наши крутые ракетки",
+};
 
 export default async function Page() {
   const rackets = getRackets(1, 10);

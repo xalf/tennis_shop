@@ -37,9 +37,9 @@ export default function RacketsGallery(props: {
       <div className="embla">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container" id={carouselId}>
-            {data.map((item) => (
+            {data.map((item, index) => (
               <div key={item.id} className="embla__slide">
-                <RacketItem racket={item} />
+                <RacketItem racket={item} isEager={index < 3} />
               </div>
             ))}
           </div>

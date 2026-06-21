@@ -1,5 +1,11 @@
 import { getTheBestRackets } from "@/api";
 import RacketItem from "@/components/RacketItem";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ТОП 10 ракеток | Tennis store",
+  description: "На этой странице лучшие ракетки нашего магазина",
+};
 
 export default async function TopPage() {
   const rackets = await getTheBestRackets();
@@ -11,8 +17,8 @@ export default async function TopPage() {
     <main>
       <h1>Топовые ракетки</h1>
       <div className="flex flex-wrap gap-1">
-        {rackets.data?.map((item) => (
-          <RacketItem key={item.id} racket={item} />
+        {rackets.data?.map((item, index) => (
+          <RacketItem key={item.id} racket={item} isEager={index < 3} />
         ))}
       </div>
     </main>

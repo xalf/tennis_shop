@@ -1,3 +1,4 @@
+import NextTopLoader from "nextjs-toploader";
 import "./main.css";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -9,6 +10,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <title>Теннис</title>
       </head>
       <body>
+        <NextTopLoader />
         {children}
       </body>
     </html>
