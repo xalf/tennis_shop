@@ -2,8 +2,11 @@ import { Racket } from "@/domain/racket";
 import Image from "next/image";
 import CustomLink from "../CustomLink";
 
-export default function RacketItem(props: { racket: Racket }) {
-  const { racket } = props;
+export default function RacketItem(props: {
+  racket: Racket;
+  isEager: boolean;
+}) {
+  const { racket, isEager } = props;
   return (
     <article>
       <CustomLink href={`/racket/${racket.id}`}>
@@ -13,6 +16,8 @@ export default function RacketItem(props: { racket: Racket }) {
             height={350}
             src={racket.imageUrl}
             alt={racket.name}
+            style={{ width: "100%", height: "auto" }}
+            loading={isEager ? "eager" : "lazy"}
           />
           <figcaption>{racket.name}</figcaption>
         </figure>

@@ -1,6 +1,19 @@
-import { getRacket } from "@/api";
+import { getMetadataRacketById, getRacket } from "@/api";
+import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/racket/[id]">): Promise<Metadata> {
+  const { id } = await params;
+  const meta = await getMetadataRacketById(parseInt(id));
+
+  return {
+    title: `${meta.data?.name} | Tennis store`,
+    description: meta.data?.description,
+  };
+}
 
 export default async function RacketPage({
   params,

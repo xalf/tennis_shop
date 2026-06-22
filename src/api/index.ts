@@ -28,7 +28,10 @@ export async function getRackets(
 
 export async function getTheBestRackets(): ApiResponse<Racket[]> {
   try {
-    const result = await fetch(`${process.env.BASE_API_URL}/top-10`);
+    const result = await fetch(`${process.env.BASE_API_URL}/top-10`, {
+      cache: "force-cache",
+      next: { tags: ["top"], revalidate: 600 },
+    });
 
     if (result.status === 404) {
       return { isError: false, data: undefined };
@@ -65,3 +68,20 @@ export async function getRacket(id: number): ApiResponse<Racket> {
     return { isError: true, data: undefined };
   }
 }
+export const getMetadataRacketById = async (
+  id: number,
+): ApiResponse<Racket> => {
+  const result = await fetch(`${process.env.BASE_API_URL}/meta/product/${id}`);
+
+  if (result.status === 404) {
+    return { isError: false, data: undefined };
+  }
+
+  if (!result.ok) {
+    return { isError: true, data: undefined };
+  }
+
+  const data: { product: Racket } = await result.json();
+
+  return { isError: false, data: data.product };
+};

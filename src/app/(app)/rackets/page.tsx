@@ -1,5 +1,11 @@
 import { getRackets } from "@/api";
 import RacketItem from "@/components/RacketItem";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Все ракетки | Tennis store",
+  description: "На этой странице все ракетки",
+};
 
 export default async function RacketsPage() {
   const rackets = await getRackets(1, 20);
