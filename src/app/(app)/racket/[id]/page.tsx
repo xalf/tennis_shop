@@ -1,4 +1,5 @@
 import { getMetadataRacketById, getRacket } from "@/api";
+import Favorite from "@/components/Favorite";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -27,13 +28,17 @@ export default async function RacketPage({
   if (!racketResponse.data) {
     notFound();
   }
+
   return (
     <main>
       <section className="flex gap-1">
         <div className="w-30%">
-          <p>{racketResponse.data.brand.name}</p>
+          <p>{racketResponse.data?.brand.name}</p>
           <h1>{racketResponse.data.name}</h1>
           <p>{racketResponse.data.description}</p>
+          {racketResponse.data.userData && (
+            <Favorite isFavorite={racketResponse.data.userData.isFavorite} />
+          )}
         </div>
         <Image
           className="w-170"
