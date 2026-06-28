@@ -3,32 +3,56 @@
 import { usePathname } from "next/navigation";
 import CustomLink from "../CustomLink";
 import classNames from "classnames";
+import { PropsWithChildren, useContext } from "react";
+import { UserContext } from "@/components/UserProvider";
+import Logout from "@/components/Logout";
 
 export default function Header() {
   const pathname = usePathname();
+  const userData = useContext(UserContext);
+
   return (
     <header className="flex">
       <p className="mr-auto">Tennis store</p>
       <nav>
-        <CustomLink
-          href="/"
-          className={classNames({
-            "px-2": true,
-            "text-red-900": pathname.match(/^\/$/),
-          })}
-        >
+        <NavLink href="/" isActive={!!pathname.match(/^\/$/)}>
           Главная
-        </CustomLink>
-        <CustomLink
-          href="/rackets"
-          className={classNames({
-            "px-2": true,
-            "text-red-900": pathname.match(/^\/racket/),
-          })}
-        >
+        </NavLink>
+        <NavLink href="/rackets" isActive={!!pathname.match(/^\/racket/)}>
           Ракетки
-        </CustomLink>
+        </NavLink>
+        {userData ? (
+          <>
+            <span>{userData.login}</span>
+            <Logout />
+          </>
+        ) : (
+          <>
+            <NavLink href="/login" isActive={!!pathname.match(/^\/login$/)}>
+              Войти
+            </NavLink>
+            <NavLink href="/signup" isActive={!!pathname.match(/^\/signup/)}>
+              Зарегистрироваться
+            </NavLink>
+          </>
+        )}
       </nav>
     </header>
+  );
+}
+
+function NavLink(
+  props: PropsWithChildren<{ href: string; isActive: boolean }>,
+) {
+  return (
+    <CustomLink
+      href={props.href}
+      className={classNames({
+        "px-2": true,
+        "text-red-900": props.isActive,
+      })}
+    >
+      {props.children}
+    </CustomLink>
   );
 }

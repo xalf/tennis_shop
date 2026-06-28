@@ -1,13 +1,14 @@
+"use client";
+
 import { Metadata } from "next";
+import { useParams } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Не найдено | Tennis store",
 };
 
-export default async function RacketNotFound({
-  params,
-}: PageProps<"/racket/[id]">) {
-  const { id } = await params;
+export default function RacketNotFound() {
+  const { id } = useParams();
 
   return (
     <main>
