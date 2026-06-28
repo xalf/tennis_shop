@@ -8,8 +8,14 @@ export async function getRackets(
   limit: number,
 ): ApiResponse<Racket[]> {
   try {
+    const cookiesStore = await cookies();
     const result = await fetch(
-      `${process.env.BASE_API_URL}/products?page=${page}&limit=${limit}`,
+      `${process.env.BASE_API_URL}/products?page=${page}&limit=${limit}`, {
+        headers: cookiesStore ? {
+          Cookie: cookiesStore.toString(),
+        } : {},
+        next: { tags: ["list"], revalidate: 600 },
+      }
     );
 
     if (result.status === 404) {
@@ -30,8 +36,11 @@ export async function getRackets(
 
 export async function getTheBestRackets(): ApiResponse<Racket[]> {
   try {
+    const cookiesStore = await cookies();
     const result = await fetch(`${process.env.BASE_API_URL}/top-10`, {
-      cache: "force-cache",
+      headers: cookiesStore ? {
+        Cookie: cookiesStore.toString(),
+      } : {},
       next: { tags: ["top"], revalidate: 600 },
     });
 
@@ -56,14 +65,15 @@ export async function getRacket(id: number): ApiResponse<Racket> {
     const cookiesStore = await cookies();
     const result = await fetch(
       `${process.env.BASE_API_URL}/product/${id}`,
-      cookiesStore
-        ? {
-            headers: {
+      {
+           headers: cookiesStore
+        ?  {
               Cookie: cookiesStore.toString(),
-            },
+            } : undefined,
             credentials: "include",
+            next: { tags: ["racket"], revalidate: 600 },
           }
-        : undefined,
+    
     );
 
     if (result.status === 404) {
@@ -175,6 +185,35 @@ export async function logout(): ApiResponse<null> {
     });
 
     return { isError: !result.ok, data: undefined };
+  } catch {
+    return { isError: true, data: undefined };
+  }
+}
+
+
+export async function setFavorite(id: number, isFavorite: boolean): ApiResponse<void> {
+  try {
+    const cookiesStore = await cookies();
+    const result = await fetch(
+      `${process.env.BASE_API_URL}/product/${id}/favorite`,
+      {
+            headers: {
+              Cookie: cookiesStore.toString(),
+            },
+            credentials: "include",
+            method: isFavorite ? 'POST' : 'DELETE'
+          }
+    );
+
+    if (result.status === 404) {
+      return { isError: true, data: undefined };
+    }
+
+    if (!result.ok) {
+      return { isError: true, data: undefined };
+    }
+
+    return { isError: false, data: undefined };
   } catch {
     return { isError: true, data: undefined };
   }

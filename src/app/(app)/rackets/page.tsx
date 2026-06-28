@@ -18,8 +18,8 @@ export default async function RacketsPage() {
     <main>
       <h1>Ракетки</h1>
       <div className="flex flex-wrap gap-1">
-        {rackets.data?.map((item) => (
-          <RacketItem key={item.id} racket={item} />
+        {rackets.data?.map((item, index) => (
+          <RacketItem key={item.id} racket={item} isEager={index < 3} />
         ))}
       </div>
     </main>
