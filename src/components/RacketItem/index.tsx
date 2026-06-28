@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Racket } from "@/domain/racket";
 import Image from "next/image";
@@ -15,7 +15,7 @@ export default function RacketItem(props: {
   const { racket, isEager } = props;
   const userData = useContext(UserContext);
   useHydrateFavorites(racket.id, racket.userData?.isFavorite);
-  
+
   return (
     <article>
       <CustomLink href={`/racket/${racket.id}`}>
