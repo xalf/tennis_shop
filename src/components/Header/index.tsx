@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import CustomLink from "../CustomLink";
 import classNames from "classnames";
 import { PropsWithChildren, useContext } from "react";
-import { UserContext } from "@/components/UserProvider";
+import { UserContext } from "@/providers/UserProvider";
 import Logout from "@/components/Logout";
 
 export default function Header() {

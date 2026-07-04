@@ -1,8 +1,7 @@
 import { getMetadataRacketById, getRacket } from "@/api";
-import Favorite from "@/components/Favorite";
 import { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import RacketFull from "./racketFull";
 
 export async function generateMetadata({
   params,
@@ -31,24 +30,7 @@ export default async function RacketPage({
 
   return (
     <main>
-      <section className="flex gap-1">
-        <div className="w-30%">
-          <p>{racketResponse.data?.brand.name}</p>
-          <h1>{racketResponse.data.name}</h1>
-          <p>{racketResponse.data.description}</p>
-          {racketResponse.data.userData && (
-            <Favorite isFavorite={racketResponse.data.userData.isFavorite} />
-          )}
-        </div>
-        <Image
-          className="w-170"
-          width={300}
-          height={350}
-          src={racketResponse.data.imageUrl}
-          alt={racketResponse.data.name}
-        />
-        <p className="text-4xl mx-30">&euro;{racketResponse.data.price}</p>
-      </section>
+      <RacketFull racket={racketResponse.data} />
     </main>
   );
 }
